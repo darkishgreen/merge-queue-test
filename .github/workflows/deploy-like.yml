@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  maybe-like-a-deploy:
+    name: Deploy-like push echo SHA
+    # This is the thing we want to see run only once for each merge group that's
+    # pushed to main. If it's run for each commit in the merge group, then we
+    # have a problem.
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.sha }}
+      - run: echo ${{ github.event_name }}
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: |
+            contents.txt
+          sparse-checkout-cone-mode: false
+      - run: cat contents.txt

@@ -1,0 +1,18 @@
+on:
+  merge_group:
+  pull_request:
+    # no branches set to allow for chained PRs (PRs that require earlier PRs to
+    # go in) to have their checks run.
+jobs:
+  echo-sha:
+    name: PR & merge group echo SHA
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.sha }}
+      - run: echo ${{ github.event_name }}
+      - uses: actions/checkout@v3
+        with:
+          sparse-checkout: |
+            contents.txt
+          sparse-checkout-cone-mode: false
+      - run: cat contents.txt
